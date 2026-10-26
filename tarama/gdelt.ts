@@ -5,6 +5,7 @@
 import { inflateRawSync } from "node:zlib";
 import { varlikCoz, type Haber } from "./rss.ts";
 import { alanKaynagi } from "./kaynaklar.ts";
+import { guvenilirAlanMi } from "./veri/guvenilir-alanlar.ts";
 
 export const SON_GUNCELLEME = "https://data.gdeltproject.org/gdeltv2/lastupdate.txt";
 const ON_BES_DK = 15 * 60_000;
@@ -72,6 +73,7 @@ export function gkgCoz(metin: string): Haber[] {
     if (a.length < 27) continue;
     const [, damga, tur, alan, adres] = a;
     if (tur !== "1" || a[25]) continue; // 1 = web; çeviri bilgisi doluysa İngilizce değil
+    if (!alan || !guvenilirAlanMi(alan)) continue; // yalnızca güvenilir yayın kuruluşları (veri/guvenilir-alanlar.ts)
     const baslik = /<PAGE_TITLE>([\s\S]*?)<\/PAGE_TITLE>/.exec(a[26])?.[1];
     if (!baslik || !/^https?:\/\//i.test(adres) || gorulen.has(adres)) continue;
     gorulen.add(adres);

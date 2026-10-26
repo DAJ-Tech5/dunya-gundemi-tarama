@@ -268,6 +268,23 @@ export function anahtarKelimeler(metin: string): Set<string> {
   return new Set(kelimeler);
 }
 
+// Gruplamada "konu" sayılmayan kelimeler: ülke adları, lider adları ve haberlerde çok sık geçen genel kelimeler
+const GENEL_KELIMELER = new Set<string>([
+  ...(ulkeVerisi as { en: string; adlar: string[] }[]).flatMap((u) => [u.en, ...u.adlar]).flatMap((ad) => [...anahtarKelimeler(ad)]),
+  ..."trump putin zelensky zelenskyy zelenskiy erdogan aliyev pashinyan tokayev japarov mirziyoyev netanyahu modi macron merz starmer xi jinping pezeshkian lavrov rubio witkoff fidan peskov kremlin white house biden vance hegseth"
+    .split(" "),
+  ..."war wars president prime minister ministry government official officials leader leaders state talk talks deal deals warn warns warning country countries nation national world global international foreign security peace crisis conflict support call calls urge urges plan plans meet meeting visit visits sunday monday tuesday wednesday thursday friday saturday october november"
+    .split(" ")
+    .map((w) => (w.length > 4 && w.endsWith("s") ? w.slice(0, -1) : w)),
+]);
+
+/** İki başlığın paylaştığı konuya özgü kelime sayısı (ülke/lider adları ve genel kelimeler sayılmaz). */
+export function konuOrtakSayisi(a: Set<string>, b: Set<string>): number {
+  let n = 0;
+  for (const w of a) if (b.has(w) && !GENEL_KELIMELER.has(w)) n++;
+  return n;
+}
+
 export function benzerlik(a: Set<string>, b: Set<string>): number {
   if (!a.size || !b.size) return 0;
   let ortak = 0;

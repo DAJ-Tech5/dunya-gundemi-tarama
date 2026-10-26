@@ -4,12 +4,15 @@
 import type { GidenOlay, MevcutOlay } from "../lib/olaylar.ts";
 import type { Haber } from "./rss.ts";
 import { ajansMi, kaynakSayisi } from "./veri/kaynak-sayisi.ts";
-import { anahtarKelimeler, benzerlik, kategoriBul, KATEGORILER, puanla, turkiyeIlgili, ulkeBul } from "./siniflandir.ts";
+import { gorusYazisiMi } from "./veri/guvenilir-alanlar.ts";
+import { anahtarKelimeler, benzerlik, konuOrtakSayisi, kategoriBul, KATEGORILER, puanla, turkiyeIlgili, ulkeBul } from "./siniflandir.ts";
 
 export const BENZERLIK_ESIGI = 0.3;
 /** Aynı ülke + aynı tür + 24 saat içinde ise daha düşük eşik yeter. */
 export const YAKIN_BENZERLIK_ESIGI = 0.12;
 export const ZAMAN_PENCERESI_SAAT = 36;
+/** İki haberin aynı gelişme sayılması için gereken en az ortak "konu" kelimesi (ülke/lider adları ve genel kelimeler sayılmaz). */
+export const EN_AZ_ORTAK_KONU = 1;
 /** Bir taramada bir gelişme için siteye gönderilen en fazla yeni haber (önce ajanslar). */
 export const OLAY_BASINA_HABER = 20;
 
@@ -30,6 +33,7 @@ export type SiniflanmisHaber = Haber & {
 
 /** Habere tür ve ülke atar; ilgisiz (türü yok) veya yeri bulunamayan haberler atılır. */
 export function siniflandir(h: Haber): SiniflanmisHaber | null {
+  if (gorusYazisiMi(h.baslik, h.adres)) return null; // görüş yazısı, okur mektubu, başyazı: haber değil
   const metin = `${h.baslik}. ${h.ozet}`;
   // Tür önce başlıktan; yalnızca açıklamada geçiyorsa daha düşük taban
   const basliktan = kategoriBul(h.baslik);
@@ -100,7 +104,12 @@ export function kumele(
     for (const k of kumeler) {
       if (k.ulke !== h.ulke) continue;
       if (Math.abs(new Date(k.son).getTime() - zaman) > ZAMAN_PENCERESI_SAAT * 3_600_000) continue;
-      const skor = Math.max(...k.haberler.map((x) => benzerlik(x.kelimeler, h.kelimeler)));
+      // Yalnızca konuya özgü en az EN_AZ_ORTAK_KONU kelime paylaşan haberlerle karşılaştırılır
+      // ("Trump" + "savaş" gibi genel kelimeler alakasız haberleri birleştirmesin)
+      const skor = Math.max(
+        0,
+        ...k.haberler.filter((x) => konuOrtakSayisi(x.kelimeler, h.kelimeler) >= EN_AZ_ORTAK_KONU).map((x) => benzerlik(x.kelimeler, h.kelimeler)),
+      );
       const yakin = k.tur === h.tur && Math.abs(new Date(k.son).getTime() - zaman) <= 24 * 3_600_000;
       if (skor >= (yakin ? YAKIN_BENZERLIK_ESIGI : BENZERLIK_ESIGI) && (!enIyi || skor > enIyi.skor)) enIyi = { kume: k, skor };
     }
