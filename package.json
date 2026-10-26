@@ -1,0 +1,11 @@
+{
+  "name": "dunya-gundemi-tarama",
+  "private": true,
+  "type": "module",
+  "description": "Herkese açık haber akışlarını tarayıp önemli gelişmeleri gruplayan küçük program",
+  "scripts": {
+    "tarama": "node tarama/calistir.ts",
+    "kuru": "node tarama/calistir.ts --kuru"
+  },
+  "engines": { "node": ">=24" }
+}

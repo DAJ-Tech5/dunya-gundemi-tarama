@@ -1,0 +1,32 @@
+# Haber taraması: 5 dakikada bir (GitHub'ın izin verdiği en kısa aralık; yoğun anlarda gecikebilir).
+# Herkese açık depolarda GitHub Actions dakikaları ücretsizdir. Ek paket kurulmaz, her çalışma ~1 dakika sürer.
+# Gerekli gizli değerler (Settings → Secrets and variables → Actions): TARAMA_ADRESI, TARAMA_ANAHTARI
+
+name: Haber taraması
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tarama
+  cancel-in-progress: false
+
+jobs:
+  tara:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Tara ve gönder
+        run: node tarama/calistir.ts
+        env:
+          TARAMA_ADRESI: ${{ secrets.TARAMA_ADRESI }}
+          TARAMA_ANAHTARI: ${{ secrets.TARAMA_ANAHTARI }}
