@@ -1,4 +1,5 @@
-# Haber taraması: 5 dakikada bir (GitHub'ın izin verdiği en kısa aralık; yoğun anlarda gecikebilir).
+# Haber taraması. Asıl zamanlayıcı sitedir: 5 dakikada bir bu görevi komutla başlatır (GitHub'ın kendi zamanlayıcısı
+# sık görevleri 30–60 dakika geciktirebiliyor). Aşağıdaki zamanlama yalnızca yedektir.
 # Herkese açık depolarda GitHub Actions dakikaları ücretsizdir. Ek paket kurulmaz, her çalışma ~1 dakika sürer.
 # Gerekli gizli değerler (Settings → Secrets and variables → Actions): TARAMA_ADRESI, TARAMA_ANAHTARI
 
@@ -6,7 +7,7 @@ name: Haber taraması
 
 on:
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "13,43 * * * *" # yedek: yarım saatte bir
   workflow_dispatch: {}
 
 permissions:

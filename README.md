@@ -4,7 +4,7 @@ Herkese açık haber akışlarını (RSS), GDELT dünya basını dosyalarını v
 ülkeye göre sınıflandırıp aynı olayı anlatanları gruplayan küçük bir program. Ek paket gerektirmez (Node.js 24).
 
 - Deneme (hiçbir yere göndermez): `npm run kuru`
-- GitHub Actions'ta 5 dakikada bir çalışır (`.github/workflows/tarama.yml`); sonucu gizli değerlerde tanımlı
-  adrese gönderir.
+- GitHub Actions'ta çalışır (`.github/workflows/tarama.yml`): 5 dakikada bir komutla başlatılır, ayrıca yarım
+  saatte bir kendi zamanlamasıyla (yedek). Sonucu gizli değerlerde tanımlı adrese gönderir.
 
 Bu depo otomatik olarak güncellenen bir kopyadır; değişiklik önerileri kabul edilmez.
