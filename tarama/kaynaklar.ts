@@ -20,16 +20,18 @@ export type RssKaynagi = {
  * Herkese açık akışı olmayan ya da isteği engelleyen büyük kaynaklar için Google Haberler'in ücretsiz akışı:
  * yalnızca o sitenin son 24 saatteki haberleri. Bağlantılar Google üzerinden siteye yönlendirir.
  */
-function googleHaberler(ad: string, alan: string, sonEk = ad): RssKaynagi {
+function googleHaberler(ad: string, alan: string, sonEk = ad, ulke?: string): RssKaynagi {
   return {
     tur: "rss",
     ad,
+    ulke,
     adres: `https://news.google.com/rss/search?q=site:${alan}+when:1d&hl=en-US&gl=US&ceid=US:en`,
     alanlar: [alan],
     sonEk: ` - ${sonEk}`,
     metinKapali: true,
   };
 }
+// GitHub makinelerinden gelen isteği engelleyen siteler de Google Haberler üzerinden okunur
 
 
 export const RSS_KAYNAKLARI: RssKaynagi[] = [
@@ -59,7 +61,7 @@ export const RSS_KAYNAKLARI: RssKaynagi[] = [
   { tur: "rss", ad: "The Independent", adres: "https://www.independent.co.uk/news/world/rss", alanlar: ["independent.co.uk"] },
   { tur: "rss", ad: "Sky News", adres: "https://feeds.skynews.com/feeds/rss/world.xml", alanlar: ["news.sky.com", "sky.com"] },
   { tur: "rss", ad: "Le Monde", adres: "https://www.lemonde.fr/en/international/rss_full.xml", alanlar: ["lemonde.fr"] },
-  { tur: "rss", ad: "Politico Europe", adres: "https://www.politico.eu/feed/", alanlar: ["politico.eu"] },
+  googleHaberler("Politico Europe", "politico.eu", "POLITICO.eu"),
   { tur: "rss", ad: "SCMP", adres: "https://www.scmp.com/rss/91/feed", alanlar: ["scmp.com"] },
   { tur: "rss", ad: "Yonhap", adres: "https://en.yna.co.kr/RSS/news.xml", alanlar: ["yna.co.kr"] },
   // BM insani yardım (afetler)
@@ -73,7 +75,7 @@ export const RSS_KAYNAKLARI: RssKaynagi[] = [
   { tur: "rss", ad: "The Hindu", adres: "https://www.thehindu.com/news/international/feeder/default.rss" },
   { tur: "rss", ad: "Ukrinform", adres: "https://www.ukrinform.net/rss/block-lastnews", ulke: "UKR" },
   { tur: "rss", ad: "24.kg", adres: "https://24.kg/english/rss/", ulke: "KGZ" },
-  { tur: "rss", ad: "Report.az", adres: "https://report.az/en/rss/", ulke: "AZE" },
+  googleHaberler("Report.az", "report.az", "Report.az", "AZE"),
   { tur: "rss", ad: "UzA", adres: "https://uza.uz/en/rss", ulke: "UZB" },
   { tur: "rss", ad: "JAMnews", adres: "https://jam-news.net/feed/" },
 ];
