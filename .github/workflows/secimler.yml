@@ -1,0 +1,27 @@
+# Seçim takvimi: Vikipedi ulusal ve yerel seçim takvimlerini günde bir kez okur ve siteye gönderir.
+# Gerekli gizli değerler: TARAMA_ADRESI, TARAMA_ANAHTARI
+
+name: Seçim takvimi
+
+on:
+  schedule:
+    - cron: "40 3 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  secimler:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Seçimleri oku ve gönder
+        run: node tarama/secimler.ts
+        env:
+          TARAMA_ADRESI: ${{ secrets.TARAMA_ADRESI }}
+          TARAMA_ANAHTARI: ${{ secrets.TARAMA_ANAHTARI }}

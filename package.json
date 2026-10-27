@@ -5,7 +5,8 @@
   "description": "Herkese açık haber akışlarını tarayıp önemli gelişmeleri gruplayan küçük program",
   "scripts": {
     "tarama": "node tarama/calistir.ts",
-    "kuru": "node tarama/calistir.ts --kuru"
+    "kuru": "node tarama/calistir.ts --kuru",
+    "secimler": "node tarama/secimler.ts --kuru"
   },
   "engines": { "node": ">=24" }
 }

@@ -6,5 +6,7 @@ Herkese açık haber akışlarını (RSS), GDELT dünya basını dosyalarını v
 - Deneme (hiçbir yere göndermez): `npm run kuru`
 - GitHub Actions'ta çalışır (`.github/workflows/tarama.yml`): 5 dakikada bir komutla başlatılır, ayrıca yarım
   saatte bir kendi zamanlamasıyla (yedek). Sonucu gizli değerlerde tanımlı adrese gönderir.
+- Seçim takvimi (`tarama/secimler.ts`): Vikipedi ulusal ve yerel seçim takvimlerini günde bir kez okur
+  (`.github/workflows/secimler.yml`). Deneme: `npm run secimler`
 
 Bu depo otomatik olarak güncellenen bir kopyadır; değişiklik önerileri kabul edilmez.
