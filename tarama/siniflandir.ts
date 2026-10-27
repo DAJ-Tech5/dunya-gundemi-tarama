@@ -273,7 +273,7 @@ const GENEL_KELIMELER = new Set<string>([
   ...(ulkeVerisi as { en: string; adlar: string[] }[]).flatMap((u) => [u.en, ...u.adlar]).flatMap((ad) => [...anahtarKelimeler(ad)]),
   ..."trump putin zelensky zelenskyy zelenskiy erdogan aliyev pashinyan tokayev japarov mirziyoyev netanyahu modi macron merz starmer xi jinping pezeshkian lavrov rubio witkoff fidan peskov kremlin white house biden vance hegseth"
     .split(" "),
-  ..."war wars president prime minister ministry government official officials leader leaders state talk talks deal deals warn warns warning country countries nation national world global international foreign security peace crisis conflict support call calls urge urges plan plans meet meeting visit visits sunday monday tuesday wednesday thursday friday saturday october november"
+  ..."war wars president prime minister ministry government official officials leader leaders state talk talks deal deals warn warns warning country countries nation national world global international foreign security peace crisis conflict support call calls urge urges plan plans meet meeting visit visits election elections vote votes voter voters voting poll polls campaign campaigns candidate candidates presidential parliamentary midterm midterms republican republicans democrat democrats administration win wins victory say says said sunday monday tuesday wednesday thursday friday saturday october november"
     .split(" ")
     .map((w) => (w.length > 4 && w.endsWith("s") ? w.slice(0, -1) : w)),
 ]);
