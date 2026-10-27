@@ -92,7 +92,7 @@ function tarihleriCoz(metin: string, yil: number): { tarih: string | null; ay: s
   return sonuc;
 }
 
-function kimlikUret(...parcalar: (string | null)[]): string {
+export function kimlikUret(...parcalar: (string | null)[]): string {
   // Basit, kararlı özet (FNV-1a 64): aynı seçim her gün aynı kimliği alır
   let h = 0xcbf29ce484222325n;
   for (const c of parcalar.join("|")) {

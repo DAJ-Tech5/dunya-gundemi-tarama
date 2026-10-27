@@ -1,0 +1,27 @@
+# Önemli günler: resmî tatiller (Nager.Date), elle derlenen ülke günleri, dinî ve uluslararası günler. Günde bir kez.
+# Gerekli gizli değerler: TARAMA_ADRESI, TARAMA_ANAHTARI
+
+name: Önemli günler
+
+on:
+  schedule:
+    - cron: "50 3 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  gunler:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Önemli günleri topla ve gönder
+        run: node tarama/gunler.ts
+        env:
+          TARAMA_ADRESI: ${{ secrets.TARAMA_ADRESI }}
+          TARAMA_ANAHTARI: ${{ secrets.TARAMA_ANAHTARI }}

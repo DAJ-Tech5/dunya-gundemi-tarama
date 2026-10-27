@@ -6,7 +6,8 @@
   "scripts": {
     "tarama": "node tarama/calistir.ts",
     "kuru": "node tarama/calistir.ts --kuru",
-    "secimler": "node tarama/secimler.ts --kuru"
+    "secimler": "node tarama/secimler.ts --kuru",
+    "gunler": "node tarama/gunler.ts --kuru"
   },
   "engines": { "node": ">=24" }
 }
