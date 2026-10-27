@@ -11,6 +11,8 @@ export const BENZERLIK_ESIGI = 0.3;
 /** Aynı ülke + aynı tür + 24 saat içinde ise daha düşük eşik yeter. */
 export const YAKIN_BENZERLIK_ESIGI = 0.12;
 export const ZAMAN_PENCERESI_SAAT = 36;
+/** Bir grup ilk haberinden bu kadar saat sonra yeni haber almaz (konu kaymasın, grup sonsuza kadar büyümesin). */
+export const EN_UZUN_OMUR_SAAT = 48;
 /** İki haberin aynı gelişme sayılması için gereken en az ortak "konu" kelimesi (ülke/lider adları ve genel kelimeler sayılmaz). */
 export const EN_AZ_ORTAK_KONU = 1;
 /** Bir taramada bir gelişme için siteye gönderilen en fazla yeni haber (önce ajanslar). */
@@ -61,6 +63,8 @@ type Kume = {
   ilk: string;
   son: string;
   baslik: string;
+  /** ana başlığın kelimeleri (kayma denetimi için, ilk kullanımda hesaplanır) */
+  anaKelimeler?: Set<string>;
   tur: string;
   haberler: {
     adres: string;
@@ -104,12 +108,16 @@ export function kumele(
     for (const k of kumeler) {
       if (k.ulke !== h.ulke) continue;
       if (Math.abs(new Date(k.son).getTime() - zaman) > ZAMAN_PENCERESI_SAAT * 3_600_000) continue;
+      // Grup sonsuza kadar büyümesin: ilk haberinden EN_UZUN_OMUR_SAAT sonra yeni haber almaz (gelişme sürerse yeni grup açılır)
+      if (zaman - new Date(k.ilk).getTime() > EN_UZUN_OMUR_SAAT * 3_600_000) continue;
       // Yalnızca konuya özgü en az EN_AZ_ORTAK_KONU kelime paylaşan haberlerle karşılaştırılır
       // ("Trump" + "savaş" gibi genel kelimeler alakasız haberleri birleştirmesin)
-      const skor = Math.max(
-        0,
-        ...k.haberler.filter((x) => konuOrtakSayisi(x.kelimeler, h.kelimeler) >= EN_AZ_ORTAK_KONU).map((x) => benzerlik(x.kelimeler, h.kelimeler)),
-      );
+      const eslesenler = k.haberler.filter((x) => konuOrtakSayisi(x.kelimeler, h.kelimeler) >= EN_AZ_ORTAK_KONU);
+      // Kayma denetimi: zincirleme benzerlikle konu kaymasın. Yeni haber ya grubun ana başlığıyla konu kelimesi paylaşmalı
+      // ya da gruptaki en az iki haberle (A–B, B–C, C–D… diye alakasız haberlere varılmasın)
+      const anaKelimeler = k.anaKelimeler ?? (k.anaKelimeler = anahtarKelimeler(k.baslik));
+      if (konuOrtakSayisi(anaKelimeler, h.kelimeler) < 1 && eslesenler.length < 2) continue;
+      const skor = Math.max(0, ...eslesenler.map((x) => benzerlik(x.kelimeler, h.kelimeler)));
       const yakin = k.tur === h.tur && Math.abs(new Date(k.son).getTime() - zaman) <= 24 * 3_600_000;
       if (skor >= (yakin ? YAKIN_BENZERLIK_ESIGI : BENZERLIK_ESIGI) && (!enIyi || skor > enIyi.skor)) enIyi = { kume: k, skor };
     }

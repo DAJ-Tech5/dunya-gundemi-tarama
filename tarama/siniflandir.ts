@@ -259,6 +259,7 @@ const DOLGU = new Set(
 export function anahtarKelimeler(metin: string): Set<string> {
   const kelimeler = metin
     .toLocaleLowerCase("en")
+    .replace(/ı/g, "i") // Türkçe noktasız ı, ayrıştırmada kaybolmasın ("kullandı" → "kullandi")
     .normalize("NFKD")
     .replace(/[̀-ͯ]/g, "")
     .replace(/[^a-z0-9\s]/g, " ")
@@ -276,6 +277,9 @@ const GENEL_KELIMELER = new Set<string>([
   ..."war wars president prime minister ministry government official officials leader leaders state talk talks deal deals warn warns warning country countries nation national world global international foreign security peace crisis conflict support call calls urge urges plan plans meet meeting visit visits election elections vote votes voter voters voting poll polls campaign campaigns candidate candidates presidential parliamentary midterm midterms republican republicans democrat democrats administration win wins victory say says said sunday monday tuesday wednesday thursday friday saturday october november"
     .split(" ")
     .map((w) => (w.length > 4 && w.endsWith("s") ? w.slice(0, -1) : w)),
+  // Türkçe başlıklarda sık geçen genel kelimeler (seçim, oy, başkan, açıklama fiilleri vb.)
+  ..."obama harris clinton secim secimi secimin secimde secimler secimleri secimlerde secimlerinde oy oyunu oylar oylama sandik sandiga erken kullandi kullanarak kullanmanin kullanma basladi baskan baskani baskanligi aday adayi adaylar adaylari kampanya kampanyasi ara oncesi sonrasi ile icin abd soyledi acikladi dedi yapti etti olarak birbirini elestirdi destek cagri cagrisi yaptigi bulundu degerlendirdi gorustu ziyaret hukumet bakan bakani sozcu sozcusu"
+    .split(" "),
 ]);
 
 /** İki başlığın paylaştığı konuya özgü kelime sayısı (ülke/lider adları ve genel kelimeler sayılmaz). */
