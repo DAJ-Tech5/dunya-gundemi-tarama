@@ -8,5 +8,6 @@ Herkese açık haber akışlarını (RSS), GDELT dünya basını dosyalarını v
   saatte bir kendi zamanlamasıyla (yedek). Sonucu gizli değerlerde tanımlı adrese gönderir.
 - Seçim takvimi (`tarama/secimler.ts`): Vikipedi ulusal ve yerel seçim takvimlerini günde bir kez okur
   (`.github/workflows/secimler.yml`). Deneme: `npm run secimler`
+- Önemli günler (`tarama/gunler.ts`) ve tarihte bugün (`tarama/tarihte-bugun.ts`, Türkçe Vikipedi): günde bir kez.
 
 Bu depo otomatik olarak güncellenen bir kopyadır; değişiklik önerileri kabul edilmez.
