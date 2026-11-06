@@ -46,6 +46,15 @@ export const RSS_KAYNAKLARI: RssKaynagi[] = [
   { tur: "rss", ad: "France 24", adres: "https://www.france24.com/en/rss", alanlar: ["france24.com"] },
   { tur: "rss", ad: "Euronews", adres: "https://www.euronews.com/rss?level=theme&name=news", alanlar: ["euronews.com"] },
   { tur: "rss", ad: "Daily Sabah", adres: "https://www.dailysabah.com/rss/world", alanlar: ["dailysabah.com"] },
+  // Metni otomatik okunabilen uluslararası kaynaklar (6 Kasım 2026): Guardian, BBC, FT gibi siteler özet için okunamadığından
+  // aynı gelişmenin okunabilir bir kaynağı da bulunsun diye eklendi
+  { tur: "rss", ad: "Hürriyet Daily News", adres: "https://www.hurriyetdailynews.com/rss/world", alanlar: ["hurriyetdailynews.com"] },
+  { tur: "rss", ad: "The National", adres: "https://www.thenationalnews.com/arc/outboundfeeds/rss/?outputType=xml", alanlar: ["thenationalnews.com"] },
+  { tur: "rss", ad: "CBS News", adres: "https://www.cbsnews.com/latest/rss/world", alanlar: ["cbsnews.com"] },
+  { tur: "rss", ad: "NPR", adres: "https://feeds.npr.org/1004/rss.xml", alanlar: ["npr.org"] },
+  { tur: "rss", ad: "ABC News (Avustralya)", adres: "https://www.abc.net.au/news/feed/2942460/rss.xml", alanlar: ["abc.net.au"] },
+  { tur: "rss", ad: "Japan Times", adres: "https://www.japantimes.co.jp/feed/", alanlar: ["japantimes.co.jp"] },
+  { tur: "rss", ad: "Korea Herald", adres: "https://www.koreaherald.com/rss/newsAll", alanlar: ["koreaherald.com"] },
   // Büyük uluslararası kaynaklar (26 Ekim 2026). Reuters, AP, CNN, Arab News, Washington Post ve WSJ'nin
   // herkese açık güncel akışı yok ya da isteği engelliyor: Google Haberler üzerinden okunur.
   googleHaberler("Reuters", "reuters.com"),
@@ -77,6 +86,9 @@ export const RSS_KAYNAKLARI: RssKaynagi[] = [
   { tur: "rss", ad: "24.kg", adres: "https://24.kg/english/rss/", ulke: "KGZ" },
   googleHaberler("Report.az", "report.az", "Report.az", "AZE"),
   { tur: "rss", ad: "UzA", adres: "https://uza.uz/en/rss", ulke: "UZB" },
+  { tur: "rss", ad: "Kun.uz", adres: "https://kun.uz/en/news/rss", ulke: "UZB", alanlar: ["kun.uz"] },
+  { tur: "rss", ad: "Astana Times", adres: "https://astanatimes.com/feed/", ulke: "KAZ", alanlar: ["astanatimes.com"] },
+  { tur: "rss", ad: "Kyiv Post", adres: "https://www.kyivpost.com/feed", ulke: "UKR", alanlar: ["kyivpost.com"] },
   { tur: "rss", ad: "JAMnews", adres: "https://jam-news.net/feed/" },
 ];
 
